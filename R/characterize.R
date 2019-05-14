@@ -55,11 +55,20 @@ characterize.data.frame <- function(x, ...) {
 #' @rdname characterize
 #' @export
 factorize.default <- function(x, ...) {
+    xlab <- NULL
+    if(!is.null(attributes(x)$label)){
+        xlab <- attributes(x)$label
+    }
     if (!is.null(attributes(x)$labels)) {
-        factor(x, attributes(x)$labels, names(attributes(x)$labels), ...)
+        x <- factor(x, attributes(x)$labels, names(attributes(x)$labels), ...)
+        if(!is.null(xlab)){
+            attr(x, "label") <- xlab
+        }
+        x
     } else {
         x
     }
+    
 }
 
 #' @rdname characterize
