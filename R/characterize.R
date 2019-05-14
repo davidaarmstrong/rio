@@ -38,8 +38,17 @@ factorize <- function(x, ...) {
 #' @rdname characterize
 #' @export
 characterize.default <- function(x, ...) {
+    xlab <- NULL
+    if(!is.null(attributes(x)$label)){
+        xlab <- attributes(x)$label
+    }
+    
     if (!is.null(attributes(x)$labels)) {
-        as.character(factorize(x, ...))
+        x <- as.character(factorize(x, ...))
+        if(!is.null(xlab)){
+            attr(x, "label") <- xlab
+        }
+        x
     } else {
         x
     }
@@ -60,7 +69,8 @@ factorize.default <- function(x, ...) {
         xlab <- attributes(x)$label
     }
     if (!is.null(attributes(x)$labels)) {
-        x <- factor(x, attributes(x)$labels, names(attributes(x)$labels), ...)
+        labs <- na.omit(attributes(x)$labels)
+        x <- factor(x, labs, names(labs), ...)
         if(!is.null(xlab)){
             attr(x, "label") <- xlab
         }
